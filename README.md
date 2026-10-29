@@ -202,6 +202,14 @@ flutter test
 انظر [docs/ROADMAP.md](docs/ROADMAP.md): دعم Bluetooth Beacons، توصيف الصور بالذكاء الاصطناعي،
 ساعة ذكية، وتكامل مع إشارات المرور الحكومية.
 
+## العرض التقديمي
+
+[![Presentation](https://img.shields.io/badge/PowerPoint-12%20slides-0B6B3A)](docs/Basira-Presentation.pptx)
+
+عرض من 12 شريحة بالعربية يغطي المشكلة والحل والميزات والمعمارية والأثر:
+**[docs/Basira-Presentation.pptx](docs/Basira-Presentation.pptx)** — يُولَّد بـ
+`python tools/build_presentation.py`.
+
 ## المساهمة
 
 نرحّب بالمساهمات — اقرأ [CONTRIBUTING.md](CONTRIBUTING.md) قبل فتح Pull Request.
