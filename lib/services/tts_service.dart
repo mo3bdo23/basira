@@ -80,26 +80,59 @@ class TtsService {
     } catch (_) {}
   }
 
-  /// اختيار صوت عربي إن وُجد على الجهاز.
+  /// يختار أقوى صوت عربي متاح، ويجبر لغة النطق على العربية دائمًا.
+  ///
+  /// على الويب تُحمَّل الأصوات بشكل غير متزامن، لذلك ننتظر حتى تتوفر
+  /// (حتى ثانيتين) بدلًا من الرجوع الافتراضي إلى الإنجليزية.
   Future<String?> useBestArabicVoice() async {
-    try {
-      final dynamic raw = await _tts.getVoices;
-      if (raw is! List<dynamic>) return null;
-      for (final dynamic v in raw) {
-        if (v is! Map<dynamic, dynamic>) continue;
-        final String? locale = v['locale']?.toString();
-        if (locale != null && locale.toLowerCase().startsWith('ar')) {
+    dynamic voices;
+    for (int attempt = 0; attempt < 10; attempt++) {
+      try {
+        voices = await _tts.getVoices;
+      } catch (_) {
+        voices = null;
+      }
+      if (voices is List<dynamic> && voices.isNotEmpty) break;
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+    }
+
+    if (voices is List<dynamic>) {
+      // الأفضلية: ar-EG ثم ar-SA ثم أي ar.
+      final List<dynamic> arabic = voices.where((dynamic v) {
+        if (v is! Map<dynamic, dynamic>) return false;
+        final String? loc = v['locale']?.toString().toLowerCase();
+        return loc != null && loc.startsWith('ar');
+      }).toList();
+
+      if (arabic.isNotEmpty) {
+        dynamic best = arabic.first;
+        for (final dynamic v in arabic) {
+          final String loc = (v as Map<dynamic, dynamic>)['locale'].toString().toLowerCase();
+          if (loc.contains('eg')) {
+            best = v;
+            break;
+          }
+          if (loc.contains('sa')) best = v;
+        }
+        final Map<dynamic, dynamic> map = best as Map<dynamic, dynamic>;
+        final String locale = map['locale'].toString();
+        try {
           await _tts.setVoice(<String, String>{
-            'name': v['name'].toString(),
+            'name': map['name'].toString(),
             'locale': locale,
           });
-          _language = locale;
-          return locale;
-        }
+        } catch (_) {}
+        _language = locale;
+        await _tts.setLanguage(locale);
+        return locale;
       }
-    } catch (_) {
-      // لا يوجد صوت عربي مثبّت — سيستخدم النظام الافتراضي.
     }
+
+    // لا يوجد صوت عربي: نثبّت اللغة العربية عسى المحرك يوفّر بديلًا.
+    try {
+      await _tts.setLanguage('ar');
+    } catch (_) {}
+    _language = 'ar';
     return null;
   }
 

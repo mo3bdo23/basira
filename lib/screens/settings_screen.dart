@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../core/app_config.dart';
 import '../models/app_settings.dart';
-import '../models/university.dart';
 import '../models/user.dart';
 import '../services/a11y_service.dart';
 import '../services/storage_service.dart';
@@ -276,14 +275,7 @@ class SettingsScreen extends StatelessWidget {
                 trailing: const Icon(Icons.edit_rounded),
                 onTap: () => _editProfile(context, app),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.account_balance_rounded, size: 30),
-                title: const Text('الجامعة الحالية', style: TextStyle(fontSize: 19)),
-                subtitle: Text(app.currentUniversity?.name ?? 'غير محددة'),
-                trailing: const Icon(Icons.chevron_left),
-                onTap: () => _pickUniversity(context, app),
-              ),
+
             ],
           ),
 
@@ -400,29 +392,6 @@ class SettingsScreen extends StatelessWidget {
       await app.speak('تم حفظ بياناتك.');
     }
     name.dispose();
-  }
-
-  Future<void> _pickUniversity(BuildContext context, AppState app) async {
-    final chosen = await showModalBottomSheet<String>(
-      context: context,
-      showDragHandle: true,
-      builder: (BuildContext context) => ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          for (final University u in app.universityList)
-            ListTile(
-              leading: const Icon(Icons.account_balance_rounded),
-              title: Text(u.name, style: const TextStyle(fontSize: 20)),
-              subtitle: Text(u.city, style: const TextStyle(fontSize: 16)),
-              onTap: () => Navigator.of(context).pop(u.id),
-            ),
-        ],
-      ),
-    );
-    if (chosen != null) {
-      await app.selectUniversity(chosen);
-      await app.speak('تم اختيار الجامعة.');
-    }
   }
 
   Future<void> _showCommands(BuildContext context, AppState app) async {

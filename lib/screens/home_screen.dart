@@ -18,7 +18,6 @@ import 'report_obstacle_screen.dart';
 import 'settings_screen.dart';
 import 'sos_active_screen.dart';
 import 'sos_contacts_screen.dart';
-import 'university_map_screen.dart';
 import 'where_am_i_screen.dart';
 
 /// الشاشة الرئيسية المبسّطة: إجراء واحد أساسي «ابدأ المشي»، وثلاثة أزرار ثانوية.
@@ -112,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case VoiceIntent.sos:
         await _open(const SosActiveScreen());
       case VoiceIntent.openUniversity:
-        await _open(const UniversityMapScreen());
+        await _open(const SettingsScreen());
       case VoiceIntent.openSettings:
         await _open(const SettingsScreen());
       case VoiceIntent.whereAmI:
@@ -284,27 +283,68 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 24),
           children: <Widget>[
             // ── رأس بسيط ─────────────────────────────────
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    name.isEmpty ? 'بصيرة' : 'أهلًا $name',
-                    style: theme.textTheme.headlineMedium,
-                  ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(18, 16, 12, 16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: <Color>[scheme.primary, scheme.primary.withValues(alpha: 0.72)],
                 ),
-                Semantics(
-                  button: true,
-                  label: 'الإعدادات',
-                  child: IconButton(
-                    iconSize: 32,
-                    tooltip: 'الإعدادات',
-                    onPressed: () => _open(const SettingsScreen()),
-                    icon: const Icon(Icons.settings_rounded),
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: scheme.primary.withValues(alpha: 0.3),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10),
                   ),
-                ),
-              ],
+                ],
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Icon(Icons.visibility_rounded, color: Colors.white, size: 30),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          name.isEmpty ? 'بصيرة' : 'أهلًا $name',
+                          style: const TextStyle(
+                              fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white),
+                        ),
+                        const SizedBox(height: 2),
+                        const Text(
+                          'طريقك الآمن.. بصوتك',
+                          style: TextStyle(fontSize: 15, color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Semantics(
+                    button: true,
+                    label: 'الإعدادات',
+                    child: IconButton(
+                      iconSize: 30,
+                      color: Colors.white,
+                      tooltip: 'الإعدادات',
+                      onPressed: () => _open(const SettingsScreen()),
+                      icon: const Icon(Icons.settings_rounded),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 10),
             Semantics(
               button: true,
               label: 'حالة التطبيق',
@@ -472,23 +512,12 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
 
             // ── المزيد (ثانوي) ──────────────────────────
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => _open(const UniversityMapScreen()),
-                    icon: const Icon(Icons.account_balance_rounded, size: 22),
-                    label: const Text('خرائط الجامعات'),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton.icon(
-                    onPressed: () => _open(const SettingsScreen()),
-                    icon: const Icon(Icons.tune_rounded, size: 22),
-                    label: const Text('الإعدادات'),
-                  ),
-                ),
-              ],
+            Center(
+              child: TextButton.icon(
+                onPressed: () => _open(const SettingsScreen()),
+                icon: const Icon(Icons.tune_rounded, size: 22),
+                label: const Text('الإعدادات'),
+              ),
             ),
           ],
         ),
