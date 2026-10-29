@@ -75,13 +75,13 @@ class SttService {
             onResult(words.trim());
           }
         },
-        localeId: _localeId,
-        listenFor: listenFor,
-        pauseFor: pauseFor,
         listenOptions: SpeechListenOptions(
           partialResults: true,
           cancelOnError: true,
           listenMode: ListenMode.dictation,
+          localeId: _localeId,
+          listenFor: listenFor,
+          pauseFor: pauseFor,
         ),
         onSoundLevelChange: onSoundLevel,
       );

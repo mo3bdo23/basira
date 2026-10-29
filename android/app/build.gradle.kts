@@ -7,7 +7,8 @@ plugins {
 android {
     namespace = "com.basira.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // لا تُضبط نسخة NDK: كل الإضافات Java/Kotlin بلا كود أصلي،
+    // وضبطها يجبر Gradle على تنزيل NDK بحجم ~1GB بلا داعٍ.
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -17,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "com.basira.app"
         // الحد الأدنى 23 لدعم flutter_secure_storage (Keystore) بشكل موثوق.
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

@@ -45,17 +45,17 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 60));
 
-    expect(find.text('ابدأ التنقل'), findsOneWidget);
+    expect(find.text('ابدأ المشي'), findsOneWidget);
     expect(find.text('بلّغ عن عائق'), findsOneWidget);
 
-    // زر خريطة الجامعة قد يكون أسفل الشاشة — نمرّر إليه ثم نتحقق.
+    // زر خرائط الجامعات قد يكون أسفل الشاشة — نمرّر إليه ثم نتحقق.
     await tester.scrollUntilVisible(
-      find.text('خريطة الجامعة'),
+      find.text('خرائط الجامعات'),
       300,
       scrollable: find.byType(Scrollable).first,
     );
     await tester.pump();
-    expect(find.text('خريطة الجامعة'), findsOneWidget);
+    expect(find.text('خرائط الجامعات'), findsOneWidget);
   });
 
   testWidgets('BigActionButton له تسمية وصفية في Semantics', (WidgetTester tester) async {
@@ -69,7 +69,7 @@ void main() {
             home: Scaffold(
               body: BigActionButton(
                 icon: Icons.navigation_rounded,
-                label: 'ابدأ التنقل',
+                label: 'ابدأ المشي',
                 hint: 'مسارات آمنة',
                 onTap: () => tapped = true,
               ),
@@ -79,10 +79,10 @@ void main() {
       ),
     );
 
-    expect(find.bySemanticsLabel('ابدأ التنقل'), findsWidgets);
+    expect(find.bySemanticsLabel('ابدأ المشي'), findsWidgets);
     expect(find.text('مسارات آمنة'), findsOneWidget);
 
-    await tester.tap(find.text('ابدأ التنقل'));
+    await tester.tap(find.text('ابدأ المشي'));
     await tester.pump();
     expect(tapped, isTrue);
   });
