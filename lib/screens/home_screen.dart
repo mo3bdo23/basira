@@ -13,6 +13,7 @@ import '../services/voice_command_router.dart';
 import '../state/app_state.dart';
 import '../widgets/sos_button.dart';
 import '../widgets/voice_orb.dart';
+import 'camera_guide_screen.dart';
 import 'navigation_screen.dart';
 import 'report_obstacle_screen.dart';
 import 'settings_screen.dart';
@@ -132,6 +133,8 @@ class _HomeScreenState extends State<HomeScreen> {
       case VoiceIntent.slower:
         await app.setSpeechRate((app.s.speechRate - 0.1).clamp(0.2, 1.0));
         await app.speak('أبطأ.');
+      case VoiceIntent.camera:
+        await _open(const CameraGuideScreen());
       case VoiceIntent.help:
         await app.speak(
           'يمكنك قول: ابدأ المشي، أين أنا، بلّغ عن عائق، طوارئ، توقف.',
@@ -465,6 +468,13 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'أين أنا؟',
               subtitle: 'وصف موقعك ومحيطك',
               onTap: () => _open(const WhereAmIScreen()),
+            ),
+            const SizedBox(height: 12),
+            _BigTile(
+              icon: Icons.camera_alt_rounded,
+              title: 'صف لي ما أمامي',
+              subtitle: 'الكاميرا تتحدث: عوائق واتجاهات',
+              onTap: () => _open(const CameraGuideScreen()),
             ),
             const SizedBox(height: 12),
             _BigTile(

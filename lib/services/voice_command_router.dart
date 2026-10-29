@@ -13,6 +13,7 @@ enum VoiceIntent {
   slower('إبطاء الصوت'),
   help('المساعدة'),
   trafficStatus('حالة إشارة المرور'),
+  camera('وصف المشهد بالكاميرا'),
   unknown('غير مفهوم');
 
   const VoiceIntent(this.labelAr);
@@ -66,6 +67,14 @@ class VoiceCommandRouter {
       'الغاء التنقل',
       'اسكت',
       'بس كده',
+    ],
+    VoiceIntent.camera: <String>[
+      'كاميرا',
+      'صور',
+      'صف لي',
+      'ايه قدامي',
+      'إيه اللي قدامي',
+      'camera',
     ],
     VoiceIntent.sos: <String>[
       'طوارئ',

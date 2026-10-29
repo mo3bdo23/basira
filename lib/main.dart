@@ -10,6 +10,7 @@ import 'screens/home_screen.dart';
 import 'screens/navigation_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/report_obstacle_screen.dart';
+import 'screens/camera_guide_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/sos_active_screen.dart';
 import 'screens/sos_contacts_screen.dart';
@@ -77,6 +78,7 @@ class BasiraApp extends StatelessWidget {
         UniversityMapScreen.route: (_) => const UniversityMapScreen(),
         VoiceSettingsScreen.route: (_) => const VoiceSettingsScreen(),
         WhereAmIScreen.route: (_) => const WhereAmIScreen(),
+        CameraGuideScreen.route: (_) => const CameraGuideScreen(),
       },
     );
   }
