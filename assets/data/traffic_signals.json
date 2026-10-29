@@ -1,0 +1,38 @@
+[
+  {
+    "id": "sig_midan_shibin",
+    "name": "إشارة ميدان شبين الكوم",
+    "lat": 30.5563,
+    "lng": 31.0120,
+    "hasAudio": true,
+    "greenSeconds": 25,
+    "redSeconds": 35
+  },
+  {
+    "id": "sig_geish",
+    "name": "إشارة شارع الجيش",
+    "lat": 30.5492,
+    "lng": 31.0089,
+    "hasAudio": false,
+    "greenSeconds": 20,
+    "redSeconds": 40
+  },
+  {
+    "id": "sig_university_gate",
+    "name": "إشارة بوابة الجامعة",
+    "lat": 30.5466,
+    "lng": 31.0102,
+    "hasAudio": true,
+    "greenSeconds": 30,
+    "redSeconds": 30
+  },
+  {
+    "id": "sig_noor",
+    "name": "إشارة أمام مدرسة النور",
+    "lat": 30.5571,
+    "lng": 31.0114,
+    "hasAudio": true,
+    "greenSeconds": 18,
+    "redSeconds": 32
+  }
+]

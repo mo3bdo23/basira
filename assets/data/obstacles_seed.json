@@ -1,0 +1,34 @@
+[
+  {
+    "id": "obs_seed_1",
+    "type": "stairs",
+    "description": "سلالم بدون درابزين عند مدخل كلية التجارة",
+    "lat": 30.5444,
+    "lng": 31.0122,
+    "severity": 3
+  },
+  {
+    "id": "obs_seed_2",
+    "type": "hole",
+    "description": "حفرة في الرصيف أمام البوابة الرئيسية",
+    "lat": 30.5463,
+    "lng": 31.0108,
+    "severity": 2
+  },
+  {
+    "id": "obs_seed_3",
+    "type": "construction",
+    "description": "أعمال بناء تسد الرصيف على شارع الجيش",
+    "lat": 30.5505,
+    "lng": 31.0079,
+    "severity": 3
+  },
+  {
+    "id": "obs_seed_4",
+    "type": "parked_car",
+    "description": "سيارات واقفة على الرصيف أمام المكتبة",
+    "lat": 30.5456,
+    "lng": 31.0116,
+    "severity": 1
+  }
+]

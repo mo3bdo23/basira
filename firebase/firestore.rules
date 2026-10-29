@@ -1,0 +1,85 @@
+rules_version = '2';
+
+// قواعد أمان Firestore لمشروع بصيرة.
+// المبدأ: المستخدم يقرأ ما يحتاجه فقط، ويكتب بلاغاته هو، ولا يمكنه التحقق من بلاغات غيره
+// إلا إذا كان متطوعًا أو مسؤولًا (حسب custom claim role).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return request.auth.token.role;
+    }
+
+    function isModerator() {
+      return role() == 'volunteer' || role() == 'university_admin' || role() == 'admin';
+    }
+
+    function isAdmin() {
+      return role() == 'admin';
+    }
+
+    // ── المستخدمون ──────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if signedIn() && request.auth.uid == userId
+                    && request.resource.data.keys().hasOnly(
+                         ['name', 'role', 'phone', 'universityId', 'createdAt', 'updatedAt', 'sos_contacts'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 80;
+      allow update: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // ── البلاغات ────────────────────────────────────────────
+    match /obstacles/{obstacleId} {
+      allow read: if true;                     // بيانات مجتمعية عامة (بلا مواقع دقيقة للسكن)
+      allow create: if signedIn()
+                    && request.resource.data.keys().hasAll(['type', 'location', 'severity'])
+                    && request.resource.data.type is string
+                    && request.resource.data.severity is int
+                    && request.resource.data.severity >= 1
+                    && request.resource.data.severity <= 3
+                    && request.resource.data.description is string
+                    && request.resource.data.description.size() <= 300
+                    && request.resource.data.reporterId == request.auth.uid
+                    && request.resource.data.status == 'pending';
+      allow update: if isModerator()
+                    || (signedIn() && resource.data.reporterId == request.auth.uid
+                        && request.resource.data.diff(resource.data).affectedKeys()
+                             .hasOnly(['description']));
+      allow delete: if isAdmin();
+    }
+
+    // ── إشارات المرور (قراءة عامة، كتابة إدارية) ────────────
+    match /traffic_signals/{signalId} {
+      allow read: if true;
+      allow write: if isModerator();
+    }
+
+    // ── المسارات والجامعات (قراءة عامة، كتابة إدارية) ───────
+    match /routes/{routeId} {
+      allow read: if true;
+      allow write: if isModerator();
+    }
+
+    match /universities/{uniId} {
+      allow read: if true;
+      allow write: if role() == 'university_admin' || isAdmin();
+    }
+
+    // ── جهات اتصال SOS: خاصة جدًا ───────────────────────────
+    match /sos_contacts/{contactId} {
+      allow read, write: if signedIn() && resource.data.ownerId == request.auth.uid;
+    }
+
+    // ── الإعدادات ───────────────────────────────────────────
+    match /settings/{userId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+  }
+}
