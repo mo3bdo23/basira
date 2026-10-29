@@ -93,7 +93,7 @@ class _VoiceOrbState extends State<VoiceOrb> with SingleTickerProviderStateMixin
                         height: widget.size + 26,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: scheme.primary.withOpacity(0.14),
+                          color: scheme.primary.withValues(alpha: 0.14),
                         ),
                       ),
                     ),
@@ -107,12 +107,12 @@ class _VoiceOrbState extends State<VoiceOrb> with SingleTickerProviderStateMixin
                           end: Alignment.bottomLeft,
                           colors: <Color>[
                             scheme.primary,
-                            scheme.primary.withOpacity(0.78),
+                            scheme.primary.withValues(alpha: 0.78),
                           ],
                         ),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                            color: scheme.primary.withOpacity(0.35),
+                            color: scheme.primary.withValues(alpha: 0.35),
                             blurRadius: 26,
                             offset: const Offset(0, 10),
                           ),

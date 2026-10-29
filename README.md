@@ -1,196 +1,225 @@
-# بصيرة — Basira
+<div align="center">
 
-> **طريقك الآمن.. بصوتك**
-> تطبيق موبايل صوتي بالكامل يمكّن الطلاب ذوي الإعاقة البصرية في مصر (15–25 سنة)
-> من التنقل داخل الجامعة وفي الشارع باستقلالية وأمان.
+<img src="assets/images/app_icon.png" width="120" alt="Basira logo" />
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.24%2B-02569B?logo=flutter)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.3%2B-0175C2?logo=dart)](https://dart.dev)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+# بصيرة · Basira
+
+**طريقك الآمن.. بصوتك**
+
+تطبيق تنقّل صوتي بالكامل، يمكّن المكفوفين وضعاف البصر من المشي في الشارع وداخل الجامعة
+باستقلالية وأمان — بدون إنترنت، وبدون أن يلمس الشاشة.
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.27%2B-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.6%2B-0175C2?logo=dart&logoColor=white)](https://dart.dev)
+[![Platform](https://img.shields.io/badge/Android%20%7C%20iOS-supported-success)]()
+[![Offline](https://img.shields.io/badge/Offline-first-0B6B3A)]()
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+</div>
 
 ---
 
-## 1. المشكلة
+## المحتويات
 
-طلاب مدرسة النور للمكفوفين بشبين الكوم أرسلوا رسالة يطالبون فيها بـ:
+- [الفكرة في سطر](#الفكرة-في-سطر)
+- [المشكلة](#المشكلة)
+- [الحل](#الحل)
+- [الميزات](#الميزات)
+- [لماذا بصيرة؟](#لماذا-بصيرة)
+- [لقطات الشاشة](#لقطات-الشاشة)
+- [التقنيات](#التقنيات)
+- [المعمارية](#المعمارية)
+- [التشغيل](#التشغيل)
+- [الاختبارات](#الاختبارات)
+- [الإتاحة](#الإتاحة)
+- [الخصوصية والسلامة](#الخصوصية-والسلامة)
+- [خريطة الطريق](#خريطة-الطريق)
+- [المساهمة](#المساهمة)
+- [الترخيص](#الترخيص)
 
-1. تطوير العصا البيضاء.
-2. مسارات إرشادية داخل الجامعات.
-3. مسارات آمنة في الشوارع.
-4. إشارات مرور صوتية.
+---
 
-النتيجة: الطالب الكفيف يعتمد على الآخرين للتنقل، فيفقد الاستقلالية ويتعرض للخطر.
-**بصيرة** يحوّل هذه المطالب إلى تطبيق واحد يعمل بالصوت فقط.
+## الفكرة في سطر
 
-## 2. الحل
+> **عصا بيضاء رقمية**: تطبيق يسمعك، يرشدك خطوة بخطوة، يحذّرك من الإشارات والعوائق،
+> ويطلب المساعدة عنك — ويعمل بالكامل بدون إنترنت.
+
+## المشكلة
+
+المكفوف في مصر يواجه ثلاث فجوات عند التنقل:
+
+| الفجوة | الأثر اليومي |
+|---|---|
+| **غياب الإرشاد الصوتي في الشارع** | يعتمد على سؤال المارة أو مرافق دائم |
+| **مسارات غير آمنة وغير موثّقة** | مخاطر أرصفة مكسورة، حفر، وأعمال بناء |
+| **إشارات مرور بلا منبّه صوتي** | عبور يعتمد على التخمين أو مساعدة الآخرين |
+
+داخل الجامعة تتضاعف المشكلة: مبانٍ متشابهة، ممرات متقاطعة، ولا خريطة يمكن «سماعها».
+
+**النتيجة:** فقدان الاستقلالية، وتقليل الحضور، وقلق مستمر للطالب وأسرته.
+
+## الحل
+
+سبع شاشات، كلها مصمّمة لتُستخدم **بالسمع فقط**:
+
+```
+Splash → إخلاء المسؤولية → تدريب صوتي → الرئيسية
+                                          ├── التنقل والإرشاد
+                                          ├── الإبلاغ عن عائق
+                                          ├── خريطة الجامعة
+                                          └── الإعدادات + طوارئ SOS
+```
+
+## الميزات
 
 | الميزة | الوصف |
 |---|---|
-| **إرشاد صوتي لحظي** | «امشِ ٤٠ مترًا ثم انعطف يمينًا» — يُنطق تلقائيًا عند كل تغيّر مسافة/اتجاه |
-| **خريطة مسارات آمنة** | مسارات موثّقة بدرجة أمان، تُحمَّل محليًا وتعمل بدون إنترنت |
-| **إشعار إشارات المرور** | تنبيه صوتي قبل الإشارة بحالتها وثوانيها المتبقية، وتنبيه إن كانت بلا منبّه صوتي |
-| **بلاغات مجتمعية** | المستخدم يسجّل عائقًا (سلالم، حفرة، رصيف مسدود) بصوته، ويُرفع عند توفر الشبكة |
-| **خرائط صوتية للجامعات** | خريطة تخطيطية للمبنى + دليل صوتي لكل مبنى + إرشاد من موقعك إليه |
-| **زر SOS** | عدّ تنازلي قابل للإلغاء، ثم إرسال الموقع برسالة SMS لجهة اتصال طارئة + اتصال |
-| **عمل أوفلاين كامل** | Hive محلي مشفّر + طابور مزامنة؛ كل الميزات الأساسية بلا إنترنت |
-| **إتاحة كاملة** | TalkBack / VoiceOver، تسميات Semantics، تباين عالٍ، أهداف لمس ≥ 88dp |
+| 🧭 **إرشاد صوتي لحظي** | «امشِ ٤٠ مترًا ثم انعطف يمينًا» — يُنطق تلقائيًا مع كل تغيّر في المسافة أو الاتجاه، وكشف الخروج عن المسار |
+| 🗺️ **مسارات آمنة** | مسارات موثّقة بدرجة أمان، محفوظة على الجهاز وتعمل بدون إنترنت |
+| 🚦 **تنبيه إشارات المرور** | حالة الإشارة والثواني المتبقية، وتحذير خاص إن كانت بلا منبّه صوتي |
+| 📢 **بلاغات مجتمعية** | بلاغ عن عائق بوصف صوتي، يُحفظ محليًا ويُرفع تلقائيًا عند عودة الشبكة |
+| 🏛️ **خرائط جامعات صوتية** | خريطة متجهية للحرم + دليل صوتي لكل مبنى + إرشاد من موقعك إليه |
+| 🆘 **زر SOS** | عدّ تنازلي قابل للإلغاء، ثم رسالة SMS بموقعك + اتصال بجهة اتصال طارئة |
+| 📴 **أوفلاين كامل** | Hive مشفّر، خرائط متجهية، وطابور مزامنة — لا يحتاج شبكة للعمل |
+| ♿ **إتاحة عميقة** | TalkBack/VoiceOver، تسميات Semantics لكل عنصر، تباين عالٍ، أهداف لمس 88dp |
+| 🔒 **خصوصية بالتصميم** | تشفير AES-256، لا تتبع في الخلفية، حذف كامل للبيانات من داخل التطبيق |
 
-## 3. الشاشات (7)
+## لماذا بصيرة؟
 
-```
-Splash → إخلاء المسؤولية → Onboarding صوتي → Home
-                                                ├── Navigation (إرشاد)
-                                                ├── Report Obstacle (بلاغ)
-                                                ├── University Map (خرائط)
-                                                └── Settings + SOS Contacts (إعدادات وطوارئ)
-```
+| | خرائط عامة | تطبيقات ملاحة صوتية أجنبية | **بصيرة** |
+|---|---|---|---|
+| إرشاد عربي مصري | جزئي | ✗ | ✅ |
+| تنبيه إشارات المرور | ✗ | ✗ | ✅ |
+| بلاغات عوائق مجتمعية | ✗ | ✗ | ✅ |
+| خرائط داخل الحرم الجامعي | ✗ | ✗ | ✅ |
+| يعمل بدون إنترنت | ✗ | جزئي | ✅ |
+| SOS برسالة موقع | ✗ | ✗ | ✅ |
+| مجاني ومفتوح المصدر | ✗ | ✗ | ✅ |
 
-| # | الشاشة | الملف |
-|---|---|---|
-| 1 | Splash | `lib/main.dart` (SplashScreen) |
-| 2 | إخلاء المسؤولية | `lib/screens/disclaimer_screen.dart` |
-| 3 | Onboarding صوتي | `lib/screens/onboarding_screen.dart` |
-| 4 | الرئيسية (3 أزرار كبيرة) | `lib/screens/home_screen.dart` |
-| 5 | التنقل والإرشاد | `lib/screens/navigation_screen.dart` |
-| 6 | بلاغ عن عائق | `lib/screens/report_obstacle_screen.dart` |
-| 7 | خريطة الجامعة | `lib/screens/university_map_screen.dart` |
-| 8 | الإعدادات | `lib/screens/settings_screen.dart` |
-| 9 | جهات اتصال SOS | `lib/screens/sos_contacts_screen.dart` |
-| 10 | شاشة الاستغاثة | `lib/screens/sos_active_screen.dart` |
+## لقطات الشاشة
 
-## 4. التشغيل
+> تُضاف الصور في `docs/screenshots/` — الرئيسية · التنقل · البلاغ · خريطة الجامعة · SOS.
 
-```bash
-# 1) متطلبات: Flutter 3.24+ و Android SDK (أو Xcode لـ iOS)
-flutter --version
+## التقنيات
 
-# 2) التبعيات
-flutter pub get
+| الطبقة | التقنية |
+|---|---|
+| الواجهة | Flutter 3.27+ / Material 3 / RTL |
+| الصوت | `flutter_tts` (ar-EG) · `speech_to_text` |
+| الموقع | `geolocator` + محرك إرشاد مخصص |
+| الخرائط | رسم متجهي بـ `CustomPainter` (أوفلاين) + `flutter_map`/OSM اختياري |
+| التخزين | `hive` مشفّر AES-256 + `flutter_secure_storage` |
+| السحابة | Firebase (Auth / Firestore / FCM) — **اختياري** |
+| الحالة | `provider` + `ChangeNotifier` |
 
-# 3) تشغيل على جهاز/محاكي
-flutter run
+## المعمارية
 
-# 4) بناء APK للإصدار
-flutter build apk --release --split-per-abi
-# الناتج: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-```
-
-### بدون إعدادات Firebase (الوضع الافتراضي)
-
-التطبيق يعمل **بالكامل** أوفلاين: التخزين في Hive، والبلاغات تُطابَر محليًا.
-Firebase اختياري للتزامن السحابي فقط.
-
-### تشغيل Firebase (اختياري)
-
-```bash
-dart pub global activate flutterfire_cli
-flutterfire configure           # يولّد firebase_options.dart و google-services.json
-```
-
-ثم:
-1. ضع `google-services.json` في `android/app/`.
-2. أضف في `android/build.gradle`:
-   ```gradle
-   classpath 'com.google.gms:google-services:4.4.2'
-   ```
-   وفي `android/app/build.gradle`:
-   ```gradle
-   apply plugin: 'com.google.gms.google-services'
-   ```
-3. انشر قواعد Firestore من `firebase/firestore.rules`.
-
-## 5. المعمارية
-
-```
-lib/
-├── core/          ثوابت، ثيم، حسابات جغرافية نقية
-├── models/        نماذج البيانات (User, Obstacle, SafeRoute, University, Signal…)
-├── services/      TTS, STT, الموقع، محرك الإرشاد، SOS، Hive، Firebase، المزامنة
-├── state/         AppState (ChangeNotifier) — المنسّق المركزي
-├── screens/       الشاشات
-└── widgets/       مكوّنات قابلة لإعادة الاستخدام (أزرار كبيرة، خرائط، كرة صوت)
+```mermaid
+flowchart LR
+    UI[Screens] --> State[AppState]
+    State --> TTS[TTS]
+    State --> STT[STT]
+    State --> LOC[Location]
+    State --> NAV[NavigationEngine]
+    State --> OBS[Obstacles]
+    State --> SIG[Signals]
+    State --> SOS[SOS]
+    OBS --> HIVE[(Hive مشفّر)]
+    SOS --> HIVE
+    NAV --> GEO[Geo - دوال نقية]
+    State --> SYNC[SyncService] --> FB[(Firestore)]
 ```
 
 **مبادئ التصميم**
 
-1. **الصوت أولًا**: كل شاشة تُعلن نفسها، وكل إجراء له تأكيد صوتي.
-2. **أوفلاين أولًا**: Hive هو مصدر الحقيقة، والسحابة مزامنة اختيارية.
-3. **قابلية الاختبار**: منطق الإرشاد والأوامر الصوتية والحسابات الجغرافية دوال نقية.
-4. **الأمان**: مفاتيح Hive في Keychain/Keystore، لا سجلات لبيانات الموقع.
+1. **الصوت أولًا** — كل شاشة تُعلن نفسها، وكل إجراء له تأكيد منطوق.
+2. **أوفلاين أولًا** — Hive مصدر الحقيقة، والسحابة مزامنة اختيارية.
+3. **قابلية الاختبار** — الجغرافيا والإرشاد والأوامر الصوتية دوال نقية مغطاة باختبارات.
 
-التفاصيل في [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+التفاصيل: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
-## 6. الأوامر الصوتية
+## التشغيل
 
-| الأمر | الوظيفة |
-|---|---|
-| «ابدأ التنقل» | فتح قائمة المسارات الآمنة |
-| «توقف» | إنهاء التنقل |
-| «أين أنا» | وصف الموقع وأقرب مبنى وإشارة |
-| «بلّغ عن عائق» | فتح شاشة البلاغ |
-| «طوارئ» / «ساعدني» | شاشة SOS |
-| «خريطة الجامعة» | فتح خريطة الحرم |
-| «الإعدادات» | فتح الإعدادات |
-| «كرر» | إعادة آخر إرشاد |
-| «أسرع» / «أبطأ» | تعديل سرعة النطق |
-| «إشارة المرور» | حالة أقرب إشارة |
+### المتطلبات
 
-## 7. الاختبارات
+- Flutter **3.27+** (Dart 3.6+)
+- Android SDK 34+ أو Xcode 15+ (لـ iOS)
+
+```bash
+git clone https://github.com/mo3bdo23/basira.git
+cd basira
+
+flutter pub get
+flutter run                  # تشغيل على جهاز/محاكي
+flutter build apk --release  # بناء APK
+```
+
+### Firebase (اختياري)
+
+التطبيق يعمل كاملًا بدونه. للتزامن السحابي:
+
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure
+```
+
+ثم ضع `android/app/google-services.json` وفعّل إضافة Google Services في Gradle.
+انشر قواعد الأمان من [`firebase/firestore.rules`](firebase/firestore.rules).
+
+## الاختبارات
 
 ```bash
 flutter test
 ```
 
-| الملف | يغطي |
+| الملف | التغطية |
 |---|---|
-| `test/geo_test.dart` | هافرساين، الاتجاهات، الدوران، صياغة المسافات |
+| `test/geo_test.dart` | حسابات هافرساين، الاتجاهات، الدوران، صياغة المسافات |
 | `test/navigation_engine_test.dart` | التقدم، الوصول، الخروج عن المسار، تكرار التنبيهات |
 | `test/voice_command_test.dart` | تطبيع العربية المصرية وتصنيف 13 نية |
-| `test/models_test.dart` | تسلسل النماذج، تطبيع أرقام SOS، الإعدادات |
-| `test/widget_test.dart` | شاشة الرئيسية + تسميات Semantics |
+| `test/models_test.dart` | تسلسل البيانات، تطبيع أرقام SOS، الإعدادات |
+| `test/widget_test.dart` | شاشة الرئيسية وتسميات الإتاحة |
 
-## 8. هيكل البيانات
+## الإتاحة
 
-| المجموعة | الحقول الأساسية |
-|---|---|
-| `users` | id, name, role, phone, universityId, createdAt |
-| `routes` | id, name, city, points[], landmarks[], safetyScore, estimatedMinutes |
-| `obstacles` | id, type, description, location{lat,lng}, reporterId, status, severity, createdAt |
-| `traffic_signals` | id, name, geo, hasAudio, greenSeconds, redSeconds |
-| `universities` | id, name, city, center, buildings[] (id, name, geo, audioGuide[]) |
-| `sos_contacts` | id, name, phone, relation, isPrimary |
-| `settings` | speechRate, verbosity, haptics, highContrast, locationConsent… |
+- تسمية وتلميح لكل عنصر تفاعلي، وإعلان صوتي لاسم كل شاشة.
+- لا يوجد إجراء يعتمد على الصوت وحده: لكل أمر زر مقابل.
+- تباين ≥ 4.5:1، وضع «أصفر على أسود»، وأهداف لمس ≥ 88dp.
 
-## 9. الأدوار
+التفاصيل: [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md)
 
-| الدور | الصلاحيات |
-|---|---|
-| `blind` | كل ميزات التنقل والبلاغات و SOS |
-| `low_vision` | نفس الميزات + التباين العالي افتراضيًا |
-| `volunteer` | التحقق من البلاغات المجتمعية |
-| `university_admin` | إدارة خرائط الحرم والبلاغات داخل الجامعة |
-| `admin` | إدارة كل المحتوى والمستخدمين |
+## الخصوصية والسلامة
 
-## 10. الخصوصية
+- الموقع يُستخدم **أثناء الاستخدام فقط** — لا تتبع خلفي.
+- التخزين المحلي مشفّر، والمفتاح في Keystore/Keychain.
+- الموقع لا يُشارك إلا مع جهات اتصال SOS التي يضيفها المستخدم.
+- التطبيق **أداة مساعدة** لا بديلًا عن العصا البيضاء — إخلاء المسؤولية إلزامي قبل الاستخدام.
 
-- الموقع **لا يُستخدم إلا أثناء الاستخدام**.
-- التخزين المحلي مشفّر (AES-256) والمفتاح في Keystore/Keychain.
-- لا يُشارك الموقع مع أي طرف ثالث؛ يُرسل فقط لجهات اتصال SOS **بموافقتك**.
-- يمكن حذف كل البيانات من: الإعدادات ← الخصوصية ← حذف كل بياناتي.
+اقرأ: [سياسة الخصوصية](docs/PRIVACY.md) · [إخلاء المسؤولية](docs/DISCLAIMER.md)
 
-اقرأ [`docs/PRIVACY.md`](docs/PRIVACY.md) و[`docs/DISCLAIMER.md`](docs/DISCLAIMER.md).
+## خريطة الطريق
 
-## 11. الفريق والخطة
+انظر [docs/ROADMAP.md](docs/ROADMAP.md): دعم Bluetooth Beacons، توصيف الصور بالذكاء الاصطناعي،
+ساعة ذكية، وتكامل مع إشارات المرور الحكومية.
 
-خطة 5 أسابيع لفريق 5 أشخاص: [`docs/PROJECT_PLAN.md`](docs/PROJECT_PLAN.md)
-التحديات والحلول: [`docs/CHALLENGES.md`](docs/CHALLENGES.md)
-أهداف التنمية المستدامة: [`docs/SDG.md`](docs/SDG.md)
-سيناريو العرض: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)
+## المساهمة
 
-## 12. الترخيص
+نرحّب بالمساهمات — اقرأ [CONTRIBUTING.md](CONTRIBUTING.md) قبل فتح Pull Request.
 
-MIT — انظر [LICENSE](LICENSE).
+## الترخيص
+
+[MIT](LICENSE) © 2026 Basira
 
 ---
 
-**WE للتكنولوجيا التطبيقية** · مشروع Capstone — الرياضيات التطبيقية · مجموعة 40626123
+<details>
+<summary><strong>English summary</strong></summary>
+
+**Basira** (بصيرة) is a voice-first Flutter application that helps blind and low-vision
+people navigate streets and university campuses independently. It provides real-time
+turn-by-turn voice guidance, safe-route maps, traffic-signal audio alerts, community
+obstacle reports, spoken campus maps, a cancellable SOS that sends the user's location
+by SMS, and full offline operation. The UI is Arabic-first (RTL), fully accessible with
+TalkBack/VoiceOver, and stores all data encrypted on the device. Firebase sync is optional.
+
+</details>

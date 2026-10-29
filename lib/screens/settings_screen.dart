@@ -89,7 +89,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 s.verbosity.descriptionAr,
-                style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withOpacity(0.7)),
+                style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withValues(alpha: 0.7)),
               ),
             ],
           ),
@@ -299,10 +299,10 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'بصيرة ${AppConfig.version} — مشروع تخرج، WE للتكنولوجيا التطبيقية.\n'
-                'يعمل بدون إنترنت · يدعم TalkBack و VoiceOver.',
+                'بصيرة ${AppConfig.version} — تطبيق تنقل صوتي مفتوح المصدر.\n'
+                'يعمل بدون إنترنت · يدعم TalkBack و VoiceOver · MIT License',
                 textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withOpacity(0.6)),
+                style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withValues(alpha: 0.6)),
               ),
             ],
           ),
@@ -445,7 +445,7 @@ class _Section extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withOpacity(0.28),
+        color: scheme.surfaceContainerHighest.withValues(alpha: 0.28),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: scheme.outlineVariant),
       ),
@@ -505,7 +505,7 @@ class _InfoRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: <Widget>[
-          Icon(icon, size: 24, color: scheme.onSurface.withOpacity(0.7)),
+          Icon(icon, size: 24, color: scheme.onSurface.withValues(alpha: 0.7)),
           const SizedBox(width: 10),
           Expanded(
             child: Text(label, style: const TextStyle(fontSize: 17)),

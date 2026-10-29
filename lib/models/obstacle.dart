@@ -29,7 +29,8 @@ enum ObstacleType {
 enum ObstacleStatus {
   pending('pending', 'بانتظار التحقق'),
   verified('verified', 'مؤكد'),
-  resolved('resolved', 'تم إصلاحه');
+  resolved('resolved', 'تم إصلاحه'),
+  rejected('rejected', 'مرفوض بعد التحقق');
 
   const ObstacleStatus(this.id, this.labelAr);
   final String id;
@@ -56,6 +57,8 @@ class Obstacle {
     this.status = ObstacleStatus.pending,
     this.synced = false,
     this.severity = 2,
+    this.verificationCount = 0,
+    this.disputeCount = 0,
   });
 
   final String id;
@@ -71,9 +74,16 @@ class Obstacle {
   /// 1 = منخفض، 2 = متوسط، 3 = خطر.
   final int severity;
 
+  /// عدد التأكيدات المجتمعية (3 تأكيدات = مؤكد).
+  final int verificationCount;
+
+  /// عدد الاعتراضات (3 اعتراضات = مرفوض).
+  final int disputeCount;
+
   LatLng get position => LatLng(lat, lng);
 
-  bool get isActive => status != ObstacleStatus.resolved;
+  bool get isActive =>
+      status != ObstacleStatus.resolved && status != ObstacleStatus.rejected;
 
   Obstacle copyWith({
     ObstacleType? type,
@@ -81,6 +91,8 @@ class Obstacle {
     ObstacleStatus? status,
     bool? synced,
     int? severity,
+    int? verificationCount,
+    int? disputeCount,
   }) {
     return Obstacle(
       id: id,
@@ -93,6 +105,8 @@ class Obstacle {
       status: status ?? this.status,
       synced: synced ?? this.synced,
       severity: severity ?? this.severity,
+      verificationCount: verificationCount ?? this.verificationCount,
+      disputeCount: disputeCount ?? this.disputeCount,
     );
   }
 
@@ -113,6 +127,8 @@ class Obstacle {
         status: ObstacleStatus.fromId(map['status'] as String?),
         synced: map['synced'] == true,
         severity: (map['severity'] as num?)?.toInt() ?? 2,
+        verificationCount: (map['verificationCount'] as num?)?.toInt() ?? 0,
+        disputeCount: (map['disputeCount'] as num?)?.toInt() ?? 0,
       );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -125,6 +141,8 @@ class Obstacle {
         'status': status.id,
         'synced': synced,
         'severity': severity,
+        'verificationCount': verificationCount,
+        'disputeCount': disputeCount,
       };
 
   /// نسخة مناسبة للإرسال إلى Firestore.
@@ -136,5 +154,7 @@ class Obstacle {
         'createdAt': createdAt.toIso8601String(),
         'status': status.id,
         'severity': severity,
+        'verificationCount': verificationCount,
+        'disputeCount': disputeCount,
       };
 }

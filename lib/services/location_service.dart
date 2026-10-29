@@ -16,8 +16,13 @@ class LocationService {
   final ValueNotifier<bool> gpsOn = ValueNotifier<bool>(false);
   final ValueNotifier<bool> simulating = ValueNotifier<bool>(false);
 
+  /// يصبح true إذا انقطعت تحديثات GPS أكثر من 30 ثانية.
+  final ValueNotifier<bool> stale = ValueNotifier<bool>(false);
+
   StreamSubscription<Position>? _sub;
   Timer? _simTimer;
+  Timer? _watchdog;
+  DateTime? _lastFixAt;
   LocationAccess access = LocationAccess.denied;
   String? errorMessage;
 
@@ -68,9 +73,17 @@ class LocationService {
         (Position p) {
           position.value = LatLng(p.latitude, p.longitude);
           accuracyMeters.value = p.accuracy;
+          _lastFixAt = DateTime.now();
+          stale.value = false;
         },
         onError: (Object e) => errorMessage = e.toString(),
       );
+      _watchdog?.cancel();
+      _watchdog = Timer.periodic(const Duration(seconds: 10), (_) {
+        final DateTime? last = _lastFixAt;
+        if (last == null) return;
+        stale.value = DateTime.now().difference(last) > const Duration(seconds: 30);
+      });
       final Position? last = await Geolocator.getLastKnownPosition();
       if (last != null && position.value == null) {
         position.value = LatLng(last.latitude, last.longitude);
@@ -86,6 +99,8 @@ class LocationService {
     _sub = null;
     _simTimer?.cancel();
     _simTimer = null;
+    _watchdog?.cancel();
+    _watchdog = null;
   }
 
   /// تغذية موقع يدويًا (اختبارات / محاكاة زر SOS في العرض).

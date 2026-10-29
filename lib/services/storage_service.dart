@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// تخزين محلي أوفلاين أولًا (Hive) مع تشفير AES للمفاتيح الحساسة.
@@ -34,6 +33,7 @@ class StorageService {
   late final Box<dynamic> users;
   late final Box<dynamic> queue;
   late final Box<dynamic> meta;
+  late final Box<dynamic> votes;
 
   bool get isReady => _ready;
 
@@ -58,6 +58,7 @@ class StorageService {
     users = await _open('users', cipher);
     queue = await _open('sync_queue', cipher);
     meta = await _open('meta', cipher);
+    votes = await _open('votes', cipher);
 
     await _seed();
     _ready = true;
@@ -141,6 +142,7 @@ class StorageService {
     await users.clear();
     await queue.clear();
     await meta.clear();
+    await votes.clear();
     await Hive.deleteBoxFromDisk('routes');
     await Hive.deleteBoxFromDisk('signals');
     await Hive.deleteBoxFromDisk('universities');

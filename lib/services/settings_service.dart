@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/app_settings.dart';
+import '../models/user.dart';
 import 'storage_service.dart';
 
 /// مصدر الحقيقة الوحيد لإعدادات المستخدم.

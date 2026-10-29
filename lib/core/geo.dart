@@ -35,7 +35,7 @@ class Geo {
 
   /// الفرق الزاوي الأقصر بين اتجاهين (بين -180 و +180).
   static double angleDifference(double a, double b) {
-    double diff = (a - b + 540.0) % 360.0 - 180.0;
+    final double diff = (a - b + 540.0) % 360.0 - 180.0;
     return diff;
   }
 

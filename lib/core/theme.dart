@@ -125,10 +125,10 @@ class BasiraTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: scheme.surfaceContainerHighest.withOpacity(0.35),
+        fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         labelStyle: text.titleMedium,
-        hintStyle: text.bodyMedium?.copyWith(color: fg.withOpacity(0.6)),
+        hintStyle: text.bodyMedium?.copyWith(color: fg.withValues(alpha: 0.6)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: scheme.outline, width: 2),
@@ -142,10 +142,10 @@ class BasiraTheme {
           borderSide: BorderSide(color: scheme.primary, width: 3),
         ),
       ),
-      sliderTheme: SliderThemeData(
+      sliderTheme: const SliderThemeData(
         trackHeight: 10,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 16),
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 34),
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 16),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 34),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
@@ -153,7 +153,7 @@ class BasiraTheme {
         ),
         trackColor: WidgetStateProperty.resolveWith(
           (Set<WidgetState> s) => s.contains(WidgetState.selected)
-              ? scheme.primary.withOpacity(0.5)
+              ? scheme.primary.withValues(alpha: 0.5)
               : scheme.surfaceContainerHighest,
         ),
       ),

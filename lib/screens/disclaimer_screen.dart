@@ -109,13 +109,13 @@ class _DisclaimerScreenState extends State<DisclaimerScreen> {
                   Text(
                     'يرجى قراءة هذه النقاط والموافقة عليها لاستخدام التطبيق.',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyLarge?.copyWith(color: scheme.onSurface.withOpacity(0.75)),
+                    style: theme.textTheme.bodyLarge?.copyWith(color: scheme.onSurface.withValues(alpha: 0.75)),
                   ),
                   const SizedBox(height: 14),
                   for (final (String title, String body) in _sections)
                     Card(
                       elevation: 0,
-                      color: scheme.surfaceContainerHighest.withOpacity(0.35),
+                      color: scheme.surfaceContainerHighest.withValues(alpha: 0.35),
                       margin: const EdgeInsets.only(bottom: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),

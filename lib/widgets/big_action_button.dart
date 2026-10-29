@@ -68,9 +68,9 @@ class _BigActionButtonState extends State<BigActionButton> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme scheme = theme.colorScheme;
-    final Color bg = widget.color ?? scheme.surfaceContainerHighest.withOpacity(0.5);
+    final Color bg = widget.color ?? scheme.surfaceContainerHighest.withValues(alpha: 0.5);
     final Color fg = widget.foreground ?? scheme.onSurface;
-    final Color iconBg = widget.emphasize ? scheme.primary : scheme.primary.withOpacity(0.14);
+    final Color iconBg = widget.emphasize ? scheme.primary : scheme.primary.withValues(alpha: 0.14);
     final Color iconFg = widget.emphasize ? scheme.onPrimary : scheme.primary;
 
     return Semantics(
@@ -101,7 +101,7 @@ class _BigActionButtonState extends State<BigActionButton> {
                 border: Border.all(
                   color: _focused
                       ? scheme.primary
-                      : scheme.outlineVariant.withOpacity(0.7),
+                      : scheme.outlineVariant.withValues(alpha: 0.7),
                   width: _focused ? 4 : 1.5,
                 ),
               ),
@@ -135,7 +135,7 @@ class _BigActionButtonState extends State<BigActionButton> {
                           Text(
                             widget.hint!,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: fg.withOpacity(0.75),
+                              color: fg.withValues(alpha: 0.75),
                               fontSize: 17,
                             ),
                           ),
@@ -144,7 +144,7 @@ class _BigActionButtonState extends State<BigActionButton> {
                     ),
                   ),
                   widget.trailing ??
-                      Icon(Icons.chevron_left, size: 32, color: fg.withOpacity(0.6)),
+                      Icon(Icons.chevron_left, size: 32, color: fg.withValues(alpha: 0.6)),
                 ],
               ),
             ),

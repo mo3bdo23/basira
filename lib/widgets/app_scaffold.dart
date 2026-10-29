@@ -66,7 +66,7 @@ class _AppScaffoldState extends State<AppScaffold> {
               Text(
                 widget.subtitle!,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   fontSize: 15,
                 ),
                 textAlign: TextAlign.center,

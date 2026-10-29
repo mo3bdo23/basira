@@ -60,7 +60,7 @@ class SosContactsScreen extends StatelessWidget {
                   final SosContact c = contacts[i];
                   return Card(
                     elevation: 0,
-                    color: scheme.surfaceContainerHighest.withOpacity(0.3),
+                    color: scheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                       side: BorderSide(

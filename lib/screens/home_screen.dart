@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../core/app_config.dart';
 import '../core/geo.dart';
 import '../models/safe_route.dart';
+import '../services/navigation_engine.dart';
 import '../services/voice_command_router.dart';
 import '../state/app_state.dart';
 import '../widgets/big_action_button.dart';
@@ -169,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(18),
                     side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                   ),
-                  tileColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  tileColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   leading: const Icon(Icons.route_rounded, size: 34),
                   title: Text(r.name, style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w700)),
                   subtitle: Text(
@@ -204,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SafeRoute toUse = route;
     if (startDistance != null && startDistance > 300) {
       // المستخدم بعيد عن بداية المسار: نرشده أولًا إليها.
-      toUse = RouteFactory.between(
+      toUse = SafeRouteFactory.between(
         from: app.position!,
         to: route.start,
         name: 'الوصول إلى بداية ${route.name}',
@@ -253,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           app.statusLine,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: scheme.onSurface.withOpacity(0.7),
+                            color: scheme.onSurface.withValues(alpha: 0.7),
                           ),
                         ),
                       ],
@@ -309,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'قل: «ابدأ التنقل» أو «أين أنا»',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: scheme.onSurface.withOpacity(0.65),
+                    color: scheme.onSurface.withValues(alpha: 0.65),
                   ),
                 ),
               ),
@@ -339,9 +340,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: scheme.errorContainer.withOpacity(0.35),
+                  color: scheme.errorContainer.withValues(alpha: 0.35),
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: scheme.error.withOpacity(0.35)),
+                  border: Border.all(color: scheme.error.withValues(alpha: 0.35)),
                 ),
                 child: Row(
                   children: <Widget>[

@@ -219,7 +219,7 @@ class _ReportObstacleScreenState extends State<ReportObstacleScreen> {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: scheme.surfaceContainerHighest.withOpacity(0.4),
+              color: scheme.surfaceContainerHighest.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: scheme.outlineVariant),
             ),
@@ -259,7 +259,7 @@ class _ReportObstacleScreenState extends State<ReportObstacleScreen> {
           Text(
             'يعمل بدون إنترنت — يُخزَّن البلاغ على جهازك ويُرفع تلقائيًا.',
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withOpacity(0.65)),
+            style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurface.withValues(alpha: 0.65)),
           ),
         ],
       ),

@@ -186,8 +186,8 @@ class _UniversityMapScreenState extends State<UniversityMapScreen> {
               elevation: 0,
               margin: const EdgeInsets.only(bottom: 10),
               color: selected
-                  ? scheme.primaryContainer.withOpacity(0.5)
-                  : scheme.surfaceContainerHighest.withOpacity(0.3),
+                  ? scheme.primaryContainer.withValues(alpha: 0.5)
+                  : scheme.surfaceContainerHighest.withValues(alpha: 0.3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
                 side: BorderSide(
@@ -206,7 +206,7 @@ class _UniversityMapScreenState extends State<UniversityMapScreen> {
                         width: 46,
                         height: 46,
                         decoration: BoxDecoration(
-                          color: scheme.secondary.withOpacity(0.18),
+                          color: scheme.secondary.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Icon(_iconFor(b.category), color: scheme.secondary),
@@ -223,7 +223,7 @@ class _UniversityMapScreenState extends State<UniversityMapScreen> {
                               '${b.categoryLabelAr}${d != null ? ' · ${Geo.shortDistance(d)}' : ''}',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: scheme.onSurface.withOpacity(0.7),
+                                color: scheme.onSurface.withValues(alpha: 0.7),
                               ),
                             ),
                           ],

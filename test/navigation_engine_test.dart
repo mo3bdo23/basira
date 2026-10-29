@@ -4,16 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
 SafeRoute _straightRoute() {
-  return SafeRoute(
+  return const SafeRoute(
     id: 'test',
     name: 'مسار الاختبار',
     city: 'شبين الكوم',
-    points: const <LatLng>[
+    points: <LatLng>[
       LatLng(30.0000, 31.0000),
       LatLng(30.0005, 31.0000),
       LatLng(30.0010, 31.0000),
     ],
-    landmarks: const <String>['البداية', 'منتصف الطريق', 'النهاية'],
+    landmarks: <String>['البداية', 'منتصف الطريق', 'النهاية'],
     safetyScore: 4,
   );
 }
@@ -89,7 +89,7 @@ void main() {
 
   group('RouteFactory', () {
     test('يبني مسارًا بين نقطتين', () {
-      final SafeRoute r = RouteFactory.between(
+      final SafeRoute r = SafeRouteFactory.between(
         from: const LatLng(30.0, 31.0),
         to: const LatLng(30.001, 31.0),
         name: 'اختبار',
@@ -100,7 +100,7 @@ void main() {
     });
 
     test('يبني مسارًا عبر نقطة وسيطة', () {
-      final SafeRoute r = RouteFactory.between(
+      final SafeRoute r = SafeRouteFactory.between(
         from: const LatLng(30.0, 31.0),
         to: const LatLng(30.002, 31.0),
         via: const LatLng(30.001, 31.0005),

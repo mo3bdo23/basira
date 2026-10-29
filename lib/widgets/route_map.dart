@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:latlong2/latlong.dart' hide Path;
 
 /// خريطة مسار تخطيطية تعمل أوفلاين — ترسم المسار والموقع والوجهة.
 class RouteMap extends StatelessWidget {
@@ -64,7 +64,7 @@ class _RouteMapPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Rect area = Offset.zero & size;
-    canvas.drawRect(area, Paint()..color = scheme.surfaceContainerHighest.withOpacity(0.5));
+    canvas.drawRect(area, Paint()..color = scheme.surfaceContainerHighest.withValues(alpha: 0.5));
 
     final List<LatLng> pts = <LatLng>[...route, if (position != null) position!];
     if (pts.isEmpty) return;
@@ -92,7 +92,7 @@ class _RouteMapPainter extends CustomPainter {
         );
 
     final Paint grid = Paint()
-      ..color = scheme.outlineVariant.withOpacity(0.3)
+      ..color = scheme.outlineVariant.withValues(alpha: 0.3)
       ..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 44) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
@@ -112,7 +112,7 @@ class _RouteMapPainter extends CustomPainter {
       canvas.drawPath(
         shadow,
         Paint()
-          ..color = Colors.black.withOpacity(0.18)
+          ..color = Colors.black.withValues(alpha: 0.18)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 14
           ..strokeCap = StrokeCap.round
@@ -144,7 +144,7 @@ class _RouteMapPainter extends CustomPainter {
 
     if (position != null) {
       final Offset me = project(position!);
-      canvas.drawCircle(me, 18, Paint()..color = scheme.primary.withOpacity(0.2));
+      canvas.drawCircle(me, 18, Paint()..color = scheme.primary.withValues(alpha: 0.2));
       canvas.drawCircle(me, 11, Paint()..color = scheme.primary);
       canvas.drawCircle(
         me,
@@ -164,7 +164,7 @@ class _RouteMapPainter extends CustomPainter {
           ..lineTo(left.dx, left.dy)
           ..lineTo(right.dx, right.dy)
           ..close();
-        canvas.drawPath(cone, Paint()..color = scheme.primary.withOpacity(0.35));
+        canvas.drawPath(cone, Paint()..color = scheme.primary.withValues(alpha: 0.35));
       }
     }
   }

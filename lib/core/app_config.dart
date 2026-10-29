@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// ثوابت التطبيق العامة.
 class AppConfig {
   const AppConfig._();
@@ -31,6 +29,6 @@ class AppConfig {
   static const Duration splashDuration = Duration(milliseconds: 2200);
 
   /// حدود الوصول (نص التشغيل لا يُفلت من الـ Semantics tree).
-  static const int minTouchTargetDp = 56;
-  static const int largeTouchTargetDp = 88;
+  static const double minTouchTargetDp = 56;
+  static const double largeTouchTargetDp = 88;
 }

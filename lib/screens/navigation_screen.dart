@@ -6,6 +6,7 @@ import '../core/app_config.dart';
 import '../core/geo.dart';
 import '../models/obstacle.dart';
 import '../models/safe_route.dart';
+import '../services/haptic_service.dart';
 import '../services/navigation_engine.dart';
 import '../services/traffic_signal_service.dart';
 import '../services/voice_command_router.dart';
@@ -31,6 +32,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   bool _listening = false;
   String _lastSpoken = '';
   late final AppState _state;
+  bool _gpsWarningShown = false;
 
   AppState get _app => _state;
 
@@ -39,6 +41,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
     super.initState();
     _state = context.read<AppState>();
     _state.location.position.addListener(_onPositionChanged);
+    _state.location.stale.addListener(_onGpsRestored);
+    _state.location.stale.addListener(_onGpsStale);
     WidgetsBinding.instance.addPostFrameCallback((_) => _begin());
   }
 
@@ -77,6 +81,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
     if (NavigationEngine.shouldAnnounce(update) && update.instruction != _lastSpoken) {
       _lastSpoken = update.instruction;
       app.speak(update.instruction, interrupt: true);
+      final bool left = update.instruction.contains('يسار');
+      final bool right = update.instruction.contains('يمين');
+      HapticService.play(
+        left
+            ? HapticPattern.turnLeft
+            : right
+                ? HapticPattern.turnRight
+                : update.instruction.contains('خارج المسار')
+                    ? HapticPattern.danger
+                    : HapticPattern.step,
+        enabled: app.s.haptics,
+      );
     }
 
     _checkSignals(pos);
@@ -88,6 +104,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
     if (snapshot == null) return;
     if (_announcedSignals.contains(snapshot.signal.id)) return;
     _announcedSignals.add(snapshot.signal.id);
+    HapticService.play(
+      snapshot.isGreen ? HapticPattern.signalGreen : HapticPattern.signalRed,
+      enabled: _app.s.haptics,
+    );
     _app.speak(snapshot.toSpeech(), interrupt: false);
   }
 
@@ -96,6 +116,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     for (final Obstacle o in near) {
       if (_announcedObstacles.contains(o.id)) continue;
       _announcedObstacles.add(o.id);
+      HapticService.play(HapticPattern.obstacle, enabled: _app.s.haptics);
       final double d = Geo.distanceMeters(pos.latitude, pos.longitude, o.lat, o.lng);
       _app.speak(
         'انتبه. ${o.type.labelAr} على بعد ${Geo.spokenDistance(d)}.',
@@ -104,10 +125,30 @@ class _NavigationScreenState extends State<NavigationScreen> {
     }
   }
 
+  /// تحذير صوتي/لمسي مرة واحدة عند فقدان إشارة GPS لأكثر من 30 ثانية.
+  void _onGpsStale() {
+    if (!mounted || !_state.location.stale.value || _gpsWarningShown) return;
+    _gpsWarningShown = true;
+    HapticService.play(HapticPattern.danger, enabled: _state.s.haptics);
+    _state.speak(
+      'تحذير: إشارة تحديد الموقع ضعيفة أو منقطعة. توقف في مكان آمن حتى تعود الإشارة.',
+      interrupt: true,
+    );
+  }
+
+  /// إعلان استعادة الإشارة بعد انقطاعها.
+  void _onGpsRestored() {
+    if (!mounted || !_gpsWarningShown || _state.location.stale.value) return;
+    _gpsWarningShown = false;
+    HapticService.play(HapticPattern.success, enabled: _state.s.haptics);
+    _state.speak('عادت إشارة تحديد الموقع. يمكنك متابعة السير.', interrupt: true);
+  }
+
   Future<void> _handleArrival() async {
     if (_arrivalShown) return;
     _arrivalShown = true;
     final AppState app = _app;
+    HapticService.play(HapticPattern.arrived, enabled: app.s.haptics);
     app.speak('وصلت إلى وجهتك. ${app.activeRoute?.name ?? ''}.', interrupt: true);
     if (!mounted) return;
     await showDialog<void>(
@@ -197,7 +238,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   void dispose() {
-    _app.location.position.removeListener(_onPositionChanged);
+    _state.location.position.removeListener(_onPositionChanged);
+    _state.location.stale.removeListener(_onGpsStale);
+    _state.location.stale.removeListener(_onGpsRestored);
     super.dispose();
   }
 
@@ -245,7 +288,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: <Color>[scheme.primary, scheme.primary.withOpacity(0.8)],
+                    colors: <Color>[scheme.primary, scheme.primary.withValues(alpha: 0.8)],
                   ),
                   borderRadius: BorderRadius.circular(24),
                 ),
@@ -330,7 +373,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 '${route.name} · ${route.safetyLabelAr}',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: scheme.onSurface.withOpacity(0.7),
+                  color: scheme.onSurface.withValues(alpha: 0.7),
                 ),
               ),
               const SizedBox(height: 16),
@@ -469,7 +512,7 @@ class _ControlButton extends StatelessWidget {
       button: true,
       label: label,
       child: Material(
-        color: highlight ? scheme.primary : scheme.surfaceContainerHighest.withOpacity(0.6),
+        color: highlight ? scheme.primary : scheme.surfaceContainerHighest.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(18),
         child: InkWell(
           onTap: onTap,

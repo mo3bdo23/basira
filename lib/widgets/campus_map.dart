@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:latlong2/latlong.dart' hide Path;
 
 import '../core/geo.dart';
 import '../models/university.dart';
@@ -125,7 +125,7 @@ class _CampusPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Rect area = Offset.zero & size;
-    canvas.drawRect(area, Paint()..color = scheme.surfaceContainerHighest.withOpacity(0.45));
+    canvas.drawRect(area, Paint()..color = scheme.surfaceContainerHighest.withValues(alpha: 0.45));
 
     final List<LatLng> all = <LatLng>[
       for (final CampusBuilding b in university.buildings) b.position,
@@ -160,7 +160,7 @@ class _CampusPainter extends CustomPainter {
 
     // شبكة خفيفة للدلالة على المسافات.
     final Paint grid = Paint()
-      ..color = scheme.outlineVariant.withOpacity(0.35)
+      ..color = scheme.outlineVariant.withValues(alpha: 0.35)
       ..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 48) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
@@ -182,7 +182,7 @@ class _CampusPainter extends CustomPainter {
       canvas.drawPath(
         path,
         Paint()
-          ..color = scheme.primary.withOpacity(0.85)
+          ..color = scheme.primary.withValues(alpha: 0.85)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 7
           ..strokeCap = StrokeCap.round
@@ -202,7 +202,7 @@ class _CampusPainter extends CustomPainter {
       final Rect rect = Rect.fromCenter(center: o, width: 40, height: 30);
       canvas.drawRRect(
         RRect.fromRectAndRadius(rect, const Radius.circular(9)),
-        Paint()..color = color.withOpacity(0.9),
+        Paint()..color = color.withValues(alpha: 0.9),
       );
       _label(canvas, b.name, o + const Offset(0, 26), color, size);
     }
@@ -210,7 +210,7 @@ class _CampusPainter extends CustomPainter {
     // موقع المستخدم.
     if (position != null) {
       final Offset o = project(position!);
-      canvas.drawCircle(o, 16, Paint()..color = scheme.error.withOpacity(0.25));
+      canvas.drawCircle(o, 16, Paint()..color = scheme.error.withValues(alpha: 0.25));
       canvas.drawCircle(o, 9, Paint()..color = scheme.error);
       canvas.drawCircle(
         o,

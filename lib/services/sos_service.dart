@@ -91,7 +91,7 @@ class SosService {
         path: phone,
         queryParameters: <String, String>{'body': message},
       );
-      return launchUrl(uri);
+      return await launchUrl(uri);
     } catch (e) {
       debugPrint('SMS launch failed: $e');
       return false;
@@ -101,7 +101,7 @@ class SosService {
   /// اتصال هاتفي مباشر.
   Future<bool> call(String phone) async {
     try {
-      return launchUrl(Uri(scheme: 'tel', path: phone));
+      return await launchUrl(Uri(scheme: 'tel', path: phone));
     } catch (e) {
       debugPrint('Call failed: $e');
       return false;
@@ -111,7 +111,7 @@ class SosService {
   /// فتح خرائط جوجل على الموقع الحالي (يُستأنس به عند وجود مرافق).
   Future<bool> openMaps(LatLng position) async {
     try {
-      return launchUrl(
+      return await launchUrl(
         Uri.parse(
           'https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}',
         ),

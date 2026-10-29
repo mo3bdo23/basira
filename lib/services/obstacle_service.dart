@@ -78,4 +78,40 @@ class ObstacleService {
   List<Obstacle> pendingSync() => all().where((Obstacle o) => !o.synced).toList();
 
   Future<void> delete(String id) => _box.delete(id);
+
+  // ── التحقق المجتمعي ────────────────────────────────────────
+  static const int _confirmThreshold = 3;
+  static const int _rejectThreshold = 3;
+
+  Box<dynamic> get _votes => StorageService.instance.votes;
+
+  /// تأكيد وجود العائق. بعد 3 تأكيدات يصبح «مؤكدًا».
+  Future<Obstacle?> confirm(String id) async {
+    final dynamic raw = _box.get(id);
+    if (raw is! Map) return null;
+    final Obstacle o = Obstacle.fromMap(raw, id);
+    final int count = ((_votes.get('c_$id') as num?)?.toInt() ?? 0) + 1;
+    await _votes.put('c_$id', count);
+    final Obstacle updated = o.copyWith(
+      verificationCount: count,
+      status: count >= _confirmThreshold ? ObstacleStatus.verified : o.status,
+    );
+    await _box.put(id, updated.toMap());
+    return updated;
+  }
+
+  /// اعتراض على العائق. بعد 3 اعتراضات يصبح «مرفوضًا» ويختفي من التنبيهات.
+  Future<Obstacle?> dispute(String id) async {
+    final dynamic raw = _box.get(id);
+    if (raw is! Map) return null;
+    final Obstacle o = Obstacle.fromMap(raw, id);
+    final int count = ((_votes.get('d_$id') as num?)?.toInt() ?? 0) + 1;
+    await _votes.put('d_$id', count);
+    final Obstacle updated = o.copyWith(
+      disputeCount: count,
+      status: count >= _rejectThreshold ? ObstacleStatus.rejected : o.status,
+    );
+    await _box.put(id, updated.toMap());
+    return updated;
+  }
 }

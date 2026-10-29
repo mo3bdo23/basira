@@ -49,6 +49,8 @@ class VoiceCommandRouter {
     s = s.replaceAll(RegExp(r'[\u064B-\u065F\u0670\u0640]'), '');
     s = s.replaceAll('أ', 'ا').replaceAll('إ', 'ا').replaceAll('آ', 'ا');
     s = s.replaceAll('ى', 'ي').replaceAll('ة', 'ه').replaceAll('ؤ', 'و').replaceAll('ئ', 'ي');
+    // علامات الترقيم العربية داخل نطاق U+0600–U+06FF، فنستبعدها صراحةً.
+    s = s.replaceAll(RegExp(r'[\u060C\u061B\u061F\u066A-\u066D\u06D4]'), ' ');
     s = s.replaceAll(RegExp(r'[^\u0600-\u06FFa-z0-9\s]'), ' ');
     s = s.replaceAll(RegExp(r'\s+'), ' ');
     return s.trim();

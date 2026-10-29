@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme.dart';
@@ -49,11 +50,7 @@ class BasiraApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       locale: const Locale('ar', 'EG'),
       supportedLocales: const <Locale>[Locale('ar', 'EG'), Locale('en', 'US')],
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       theme: BasiraTheme.light(),
       darkTheme: contrast ? BasiraTheme.highContrast() : BasiraTheme.dark(),
       themeMode: contrast ? ThemeMode.dark : app.s.themeMode,
@@ -126,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: <Color>[scheme.primary, scheme.primary.withOpacity(0.75)],
+              colors: <Color>[scheme.primary, scheme.primary.withValues(alpha: 0.75)],
             ),
           ),
           child: Center(
@@ -137,9 +134,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   width: 148,
                   height: 148,
                   decoration: BoxDecoration(
-                    color: scheme.onPrimary.withOpacity(0.12),
+                    color: scheme.onPrimary.withValues(alpha: 0.12),
                     shape: BoxShape.circle,
-                    border: Border.all(color: scheme.onPrimary.withOpacity(0.4), width: 3),
+                    border: Border.all(color: scheme.onPrimary.withValues(alpha: 0.4), width: 3),
                   ),
                   child: Icon(Icons.visibility_rounded, size: 88, color: scheme.onPrimary),
                 ),
@@ -156,7 +153,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 const SizedBox(height: 6),
                 Text(
                   'طريقك الآمن.. بصوتك',
-                  style: TextStyle(fontSize: 22, color: scheme.onPrimary.withOpacity(0.9)),
+                  style: TextStyle(fontSize: 22, color: scheme.onPrimary.withValues(alpha: 0.9)),
                 ),
                 const SizedBox(height: 40),
                 SizedBox(
@@ -164,7 +161,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 46,
                   child: CircularProgressIndicator(
                     strokeWidth: 4,
-                    color: scheme.onPrimary.withOpacity(0.85),
+                    color: scheme.onPrimary.withValues(alpha: 0.85),
                   ),
                 ),
               ],

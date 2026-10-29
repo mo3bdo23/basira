@@ -28,6 +28,12 @@ void main() {
   });
 
   testWidgets('الرئيسية تعرض الأزرار الثلاثة الأساسية', (WidgetTester tester) async {
+    // شاشة طويلة (Pixel 6) حتى يبني ListView كل الأزرار الأساسية.
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       ChangeNotifierProvider<AppState>.value(
         value: state,
@@ -41,6 +47,14 @@ void main() {
 
     expect(find.text('ابدأ التنقل'), findsOneWidget);
     expect(find.text('بلّغ عن عائق'), findsOneWidget);
+
+    // زر خريطة الجامعة قد يكون أسفل الشاشة — نمرّر إليه ثم نتحقق.
+    await tester.scrollUntilVisible(
+      find.text('خريطة الجامعة'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pump();
     expect(find.text('خريطة الجامعة'), findsOneWidget);
   });
 

@@ -84,13 +84,6 @@ class SttService {
           listenMode: ListenMode.dictation,
         ),
         onSoundLevelChange: onSoundLevel,
-        onError: (SpeechRecognitionError e) {
-          listening.value = false;
-          errorMessage = e.errorMsg;
-        },
-        onStatus: (String s) {
-          listening.value = s == 'listening';
-        },
       );
       return true;
     } catch (e) {

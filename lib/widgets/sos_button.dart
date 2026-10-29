@@ -40,7 +40,7 @@ class SosButton extends StatelessWidget {
             border: Border.all(color: Colors.white, width: 4),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: scheme.error.withOpacity(0.45),
+                color: scheme.error.withValues(alpha: 0.45),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),

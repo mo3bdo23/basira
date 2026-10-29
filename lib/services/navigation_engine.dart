@@ -52,13 +52,11 @@ class NavigationEngine {
   final String verbosity;
 
   int _lastStepIndex = 0;
-  int _lastBand = -1;
   bool _arrived = false;
   String _lastKey = '';
 
   NavUpdate initial(LatLng from) {
     _lastStepIndex = 0;
-    _lastBand = -1;
     _arrived = false;
     _lastKey = '';
     return update(from, forceNavigating: true);
@@ -226,7 +224,6 @@ class NavigationEngine {
     final bool changed = key != _lastKey;
     _lastKey = key;
     _lastStepIndex = nextIndex;
-    _lastBand = band;
 
     final NavPhase phase = offRoute && !forceNavigating ? NavPhase.offRoute : NavPhase.navigating;
 
@@ -248,8 +245,8 @@ class NavigationEngine {
 }
 
 /// بناء مسار مرن بين نقطتين (مثل: الطالب → بوابة الجامعة → المبنى).
-class RouteFactory {
-  const RouteFactory._();
+class SafeRouteFactory {
+  const SafeRouteFactory._();
 
   static SafeRoute between({
     required LatLng from,

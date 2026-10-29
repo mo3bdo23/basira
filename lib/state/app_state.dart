@@ -8,7 +8,6 @@ import '../core/geo.dart';
 import '../models/app_settings.dart';
 import '../models/obstacle.dart';
 import '../models/safe_route.dart';
-import '../models/traffic_signal.dart';
 import '../models/university.dart';
 import '../models/user.dart';
 import '../services/a11y_service.dart';
@@ -253,7 +252,7 @@ class AppState extends ChangeNotifier {
     if (from == null) return null;
     final CampusBuilding? gate = university.mainGate;
     final LatLng? via = (gate != null && gate.id != building.id) ? gate.position : null;
-    return RouteFactory.between(
+    return SafeRouteFactory.between(
       from: from,
       to: building.position,
       via: via,

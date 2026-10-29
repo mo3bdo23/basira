@@ -95,7 +95,7 @@ void main() {
     });
 
     test('fromMap/toMap متماثلان', () {
-      final AppSettings s = const AppSettings(
+      const AppSettings s = AppSettings(
         userName: 'علي',
         speechRate: 0.6,
         verbosity: GuidanceVerbosity.detailed,
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('يقصّ سرعة النطق خارج النطاق', () {
-      final AppSettings s = AppSettings.fromMap(<String, dynamic>{'speechRate': 5.0});
+      final AppSettings s = AppSettings.fromMap(const <String, dynamic>{'speechRate': 5.0});
       expect(s.speechRate, lessThanOrEqualTo(1.0));
     });
   });

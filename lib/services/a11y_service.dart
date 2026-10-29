@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/semantics.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 
 /// إتاحة: إعلانات قارئ الشاشة (TalkBack / VoiceOver) + اهتزاز دلالي.
 class A11yService {
@@ -10,6 +11,7 @@ class A11yService {
   static Future<void> announce(String message, {bool assertive = true}) async {
     if (message.trim().isEmpty) return;
     try {
+      // ignore: deprecated_member_use
       await SemanticsService.announce(message, TextDirection.rtl);
       if (assertive) {
         // لا شيء إضافي: الإعلان أعلاه كافٍ لـ TalkBack/VoiceOver.
