@@ -113,6 +113,16 @@ class SettingsScreen extends StatelessWidget {
             children: <Widget>[
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
+                title: const Text('استماع دائم لكلمة «يا بصيرة»', style: TextStyle(fontSize: 19)),
+                subtitle: const Text('قل «يا بصيرة» في أي وقت ثم أمرك، دون لمس الهاتف'),
+                value: s.wakeWordEnabled,
+                onChanged: (bool v) async {
+                  await app.patchSettings(wakeWordEnabled: v);
+                  await app.speak(v ? 'الاستماع الدائم مفعّل. قل يا بصيرة.' : 'تم إيقاف الاستماع الدائم.');
+                },
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
                 title: const Text('القراءة عند التحديد', style: TextStyle(fontSize: 19)),
                 subtitle: const Text('يُقرأ العنصر تلقائيًا عند وصول قارئ الشاشة إليه'),
                 value: s.announceOnFocus,

@@ -59,6 +59,7 @@ class SttService {
     Duration listenFor = const Duration(seconds: 8),
     Duration pauseFor = const Duration(seconds: 2),
     void Function(double level)? onSoundLevel,
+    void Function(String text)? onPartial,
   }) async {
     if (!_initialized) await init();
     if (!_available) return false;
@@ -69,7 +70,10 @@ class SttService {
       await _stt.listen(
         onResult: (SpeechRecognitionResult result) {
           final String words = result.recognizedWords;
-          if (words.trim().isNotEmpty) lastWords.value = words;
+          if (words.trim().isNotEmpty) {
+            lastWords.value = words;
+            onPartial?.call(words.trim());
+          }
           if (result.finalResult && words.trim().isNotEmpty) {
             listening.value = false;
             onResult(words.trim());

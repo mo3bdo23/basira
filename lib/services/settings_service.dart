@@ -42,6 +42,7 @@ class SettingsService extends ChangeNotifier {
     String? universityId,
     bool? speakOnStart,
     bool? saveSosHistory,
+    bool? wakeWordEnabled,
   }) async {
     await update(_settings.copyWith(
       speechRate: speechRate,
@@ -60,6 +61,7 @@ class SettingsService extends ChangeNotifier {
       universityId: universityId,
       speakOnStart: speakOnStart,
       saveSosHistory: saveSosHistory,
+      wakeWordEnabled: wakeWordEnabled,
     ));
   }
 }

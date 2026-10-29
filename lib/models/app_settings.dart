@@ -38,6 +38,7 @@ class AppSettings {
     this.language = AppLanguage.arabic,
     this.speakOnStart = true,
     this.saveSosHistory = true,
+    this.wakeWordEnabled = true,
   });
 
   final double speechRate;
@@ -64,6 +65,9 @@ class AppSettings {
   final bool speakOnStart;
   final bool saveSosHistory;
 
+  /// استماع دائم لكلمة التنبيه «يا بصيرة».
+  final bool wakeWordEnabled;
+
   bool get needsOnboarding => !onboardingDone || !disclaimerAccepted;
 
   AppSettings copyWith({
@@ -87,6 +91,7 @@ class AppSettings {
     AppLanguage? language,
     bool? speakOnStart,
     bool? saveSosHistory,
+    bool? wakeWordEnabled,
   }) {
     return AppSettings(
       speechRate: speechRate ?? this.speechRate,
@@ -109,6 +114,7 @@ class AppSettings {
       language: language ?? this.language,
       speakOnStart: speakOnStart ?? this.speakOnStart,
       saveSosHistory: saveSosHistory ?? this.saveSosHistory,
+      wakeWordEnabled: wakeWordEnabled ?? this.wakeWordEnabled,
     );
   }
 
@@ -135,6 +141,7 @@ class AppSettings {
       language: map['language'] == 'english' ? AppLanguage.english : AppLanguage.arabic,
       speakOnStart: map['speakOnStart'] != false,
       saveSosHistory: map['saveSosHistory'] != false,
+      wakeWordEnabled: map['wakeWordEnabled'] != false,
     );
   }
 
@@ -159,6 +166,7 @@ class AppSettings {
         'language': language.name,
         'speakOnStart': speakOnStart,
         'saveSosHistory': saveSosHistory,
+        'wakeWordEnabled': wakeWordEnabled,
       };
 
   static ThemeMode _themeFromId(String? id) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import '../core/app_config.dart';
 import '../core/geo.dart';
 import '../models/safe_route.dart';
 import '../services/navigation_engine.dart';
+import '../services/wake_word_service.dart';
 import '../services/voice_command_router.dart';
 import '../state/app_state.dart';
 import '../widgets/sos_button.dart';
@@ -31,11 +34,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _welcomed = false;
+  WakeWordService? _wake;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _welcome());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startWakeWord());
   }
 
   Future<void> _welcome() async {
@@ -49,6 +54,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  /// يبدأ الاستماع الدائم لكلمة «يا بصيرة» إن كان الخيار مفعّلًا.
+  Future<void> _startWakeWord() async {
+    if (!mounted) return;
+    final AppState app = context.read<AppState>();
+    if (!app.s.wakeWordEnabled) return;
+    _wake ??= WakeWordService(stt: app.stt, onWake: _onWakeWord);
+    await _wake!.start();
+  }
+
+  Future<void> _onWakeWord() async {
+    if (!mounted) return;
+    final AppState app = context.read<AppState>();
+    await app.speak('نعم؟', interrupt: true);
+    await _startVoice();
+  }
+
   Future<void> _open(Widget screen) async {
     await context.read<AppState>().stt.stop();
     if (!mounted) return;
@@ -59,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // ── الصوت ────────────────────────────────────────────────
 
   Future<void> _startVoice() async {
+    await _wake?.stop();
+    if (!mounted) return;
     final AppState app = context.read<AppState>();
     if (app.stt.listening.value) {
       await app.stt.stop();
@@ -123,6 +146,8 @@ class _HomeScreenState extends State<HomeScreen> {
           interrupt: true,
         );
     }
+    // نعود للاستماع الدائم بعد تنفيذ الأمر.
+    unawaited(_startWakeWord());
   }
 
   // ── التنقل ───────────────────────────────────────────────
@@ -227,6 +252,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await app.speak('بدأت. سأرشدك خطوة بخطوة.', interrupt: true);
     if (!mounted) return;
     await _open(const NavigationScreen());
+  }
+
+  @override
+  void dispose() {
+    _wake?.stop();
+    _wake?.dispose();
+    super.dispose();
   }
 
   Future<void> _speakStatus() async {

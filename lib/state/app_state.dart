@@ -166,6 +166,7 @@ class AppState extends ChangeNotifier {
     String? universityId,
     bool? speakOnStart,
     bool? saveSosHistory,
+    bool? wakeWordEnabled,
   }) async {
     await settings.patch(
       announceOnFocus: announceOnFocus,
@@ -182,6 +183,7 @@ class AppState extends ChangeNotifier {
       universityId: universityId,
       speakOnStart: speakOnStart,
       saveSosHistory: saveSosHistory,
+      wakeWordEnabled: wakeWordEnabled,
     );
     notifyListeners();
   }
