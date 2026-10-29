@@ -20,6 +20,9 @@ class AppSettings {
   const AppSettings({
     this.speechRate = 0.45,
     this.pitch = 1.0,
+    this.volume = 1.0,
+    this.voiceName = '',
+    this.voiceLocale = '',
     this.announceOnFocus = true,
     this.haptics = true,
     this.highContrast = false,
@@ -39,6 +42,9 @@ class AppSettings {
 
   final double speechRate;
   final double pitch;
+  final double volume;
+  final String voiceName;
+  final String voiceLocale;
 
   /// يقرأ العنصر تلقائيًا عند وصول مؤشر TalkBack إليه.
   final bool announceOnFocus;
@@ -63,6 +69,9 @@ class AppSettings {
   AppSettings copyWith({
     double? speechRate,
     double? pitch,
+    double? volume,
+    String? voiceName,
+    String? voiceLocale,
     bool? announceOnFocus,
     bool? haptics,
     bool? highContrast,
@@ -82,6 +91,9 @@ class AppSettings {
     return AppSettings(
       speechRate: speechRate ?? this.speechRate,
       pitch: pitch ?? this.pitch,
+      volume: volume ?? this.volume,
+      voiceName: voiceName ?? this.voiceName,
+      voiceLocale: voiceLocale ?? this.voiceLocale,
       announceOnFocus: announceOnFocus ?? this.announceOnFocus,
       haptics: haptics ?? this.haptics,
       highContrast: highContrast ?? this.highContrast,
@@ -105,6 +117,9 @@ class AppSettings {
     return AppSettings(
       speechRate: rate.toDouble().clamp(0.1, 1.0).toDouble(),
       pitch: ((map['pitch'] as num?) ?? 1.0).toDouble().clamp(0.5, 2.0).toDouble(),
+      volume: ((map['volume'] as num?) ?? 1.0).toDouble().clamp(0.1, 1.0).toDouble(),
+      voiceName: (map['voiceName'] as String?) ?? '',
+      voiceLocale: (map['voiceLocale'] as String?) ?? '',
       announceOnFocus: map['announceOnFocus'] != false,
       haptics: map['haptics'] != false,
       highContrast: map['highContrast'] == true,
@@ -126,6 +141,9 @@ class AppSettings {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'speechRate': speechRate,
         'pitch': pitch,
+        'volume': volume,
+        'voiceName': voiceName,
+        'voiceLocale': voiceLocale,
         'announceOnFocus': announceOnFocus,
         'haptics': haptics,
         'highContrast': highContrast,

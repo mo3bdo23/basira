@@ -18,6 +18,7 @@ import 'settings_screen.dart';
 import 'sos_active_screen.dart';
 import 'sos_contacts_screen.dart';
 import 'university_map_screen.dart';
+import 'where_am_i_screen.dart';
 
 /// الشاشة الرئيسية: ثلاثة أزرار كبيرة + كرة الصوت + زر الاستغاثة.
 class HomeScreen extends StatefulWidget {
@@ -378,10 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: () async {
-                        final AppState app = context.read<AppState>();
-                        await app.speak(app.describeSurroundings(), interrupt: true);
-                      },
+                      onPressed: () => _open(const WhereAmIScreen()),
                       icon: const Icon(Icons.my_location_rounded, size: 26),
                       label: const Text('أين أنا؟'),
                     ),

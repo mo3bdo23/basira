@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-/// كشف الاتصال بالإنترنت بلا أي حزمة إضافية (DNS lookup).
+import 'connectivity_probe.dart';
+
+/// كشف الاتصال بالإنترنت — يعمل على الأجهزة وعلى الويب.
 /// الوضع الافتراضي "غير متصل" حتى نتأكد، لأن التطبيق أوفلاين أولًا.
 class ConnectivityService {
   ConnectivityService();
@@ -19,9 +20,7 @@ class ConnectivityService {
     if (_checking) return online.value;
     _checking = true;
     try {
-      final List<InternetAddress> result =
-          await InternetAddress.lookup('one.one.one.one').timeout(const Duration(seconds: 3));
-      final bool ok = result.isNotEmpty && result.first.rawAddress.isNotEmpty;
+      final bool ok = await probeOnline();
       online.value = ok;
       lastCheck.value = DateTime.now();
       return ok;

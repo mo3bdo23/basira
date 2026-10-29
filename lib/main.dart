@@ -14,6 +14,8 @@ import 'screens/settings_screen.dart';
 import 'screens/sos_active_screen.dart';
 import 'screens/sos_contacts_screen.dart';
 import 'screens/university_map_screen.dart';
+import 'screens/voice_settings_screen.dart';
+import 'screens/where_am_i_screen.dart';
 import 'services/storage_service.dart';
 import 'state/app_state.dart';
 
@@ -73,6 +75,8 @@ class BasiraApp extends StatelessWidget {
         NavigationScreen.route: (_) => const NavigationScreen(),
         ReportObstacleScreen.route: (_) => const ReportObstacleScreen(),
         UniversityMapScreen.route: (_) => const UniversityMapScreen(),
+        VoiceSettingsScreen.route: (_) => const VoiceSettingsScreen(),
+        WhereAmIScreen.route: (_) => const WhereAmIScreen(),
       },
     );
   }

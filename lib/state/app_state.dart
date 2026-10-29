@@ -78,8 +78,12 @@ class AppState extends ChangeNotifier {
 
   Future<void> init() async {
     await settings.load();
-    await tts.init(rate: s.speechRate, pitch: s.pitch);
-    await tts.useBestArabicVoice();
+    await tts.init(rate: s.speechRate, pitch: s.pitch, volume: s.volume);
+    if (s.voiceName.isNotEmpty && s.voiceLocale.isNotEmpty) {
+      await tts.applyVoice(s.voiceName, s.voiceLocale);
+    } else {
+      await tts.useBestArabicVoice();
+    }
     unawaited(FirebaseService.instance.init());
     connectivity.start();
     unawaited(sync.flush());
@@ -112,6 +116,37 @@ class AppState extends ChangeNotifier {
   Future<void> setPitch(double pitch) async {
     await settings.patch(pitch: pitch);
     await tts.setPitch(pitch);
+    notifyListeners();
+  }
+
+  Future<void> setVolume(double volume) async {
+    await settings.update(s.copyWith(volume: volume));
+    await tts.setVolume(volume);
+    notifyListeners();
+  }
+
+  /// يختار صوتًا عربيًا معيّنًا ويحفظه للجلسات القادمة.
+  Future<void> selectVoice(String name, String locale) async {
+    await settings.update(s.copyWith(voiceName: name, voiceLocale: locale));
+    await tts.applyVoice(name, locale);
+    notifyListeners();
+  }
+
+  Future<List<Map<String, String>>> availableVoices() => tts.arabicVoices();
+
+  /// يعيد إعدادات الصوت إلى الافتراضي.
+  Future<void> resetVoiceSettings() async {
+    await settings.update(s.copyWith(
+      speechRate: 0.45,
+      pitch: 1.0,
+      volume: 1.0,
+      voiceName: '',
+      voiceLocale: '',
+    ));
+    await tts.setRate(0.45);
+    await tts.setPitch(1.0);
+    await tts.setVolume(1.0);
+    await tts.useBestArabicVoice();
     notifyListeners();
   }
 

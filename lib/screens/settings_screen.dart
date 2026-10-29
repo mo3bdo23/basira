@@ -13,6 +13,7 @@ import '../widgets/app_scaffold.dart';
 import 'disclaimer_screen.dart';
 import 'onboarding_screen.dart';
 import 'sos_contacts_screen.dart';
+import 'voice_settings_screen.dart';
 
 /// الإعدادات: الصوت، الإرشاد، الإتاحة، الطوارئ، الخصوصية، عن التطبيق.
 class SettingsScreen extends StatelessWidget {
@@ -37,6 +38,17 @@ class SettingsScreen extends StatelessWidget {
             icon: Icons.record_voice_over_rounded,
             title: 'الصوت',
             children: <Widget>[
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.tune_rounded, size: 30),
+                title: const Text('إعدادات صوت متقدمة', style: TextStyle(fontSize: 19)),
+                subtitle: const Text('اختيار الصوت · مستوى الصوت · أسلوب الإرشاد'),
+                trailing: const Icon(Icons.chevron_left),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const VoiceSettingsScreen()),
+                ),
+              ),
+              const Divider(height: 20),
               _LabelValue(label: 'سرعة النطق', value: '${(s.speechRate * 100).round()}%'),
               Slider(
                 value: s.speechRate,

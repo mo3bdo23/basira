@@ -15,6 +15,7 @@ class TtsService {
   bool _initialized = false;
   double _rate = 0.45;
   double _pitch = 1.0;
+  double _volume = 1.0;
 
   final ValueNotifier<bool> speaking = ValueNotifier<bool>(false);
   final ValueNotifier<bool> unavailable = ValueNotifier<bool>(false);
@@ -23,15 +24,16 @@ class TtsService {
   String? lastSpoken;
   String _language = 'ar-EG';
 
-  Future<void> init({double rate = 0.45, double pitch = 1.0}) async {
+  Future<void> init({double rate = 0.45, double pitch = 1.0, double volume = 1.0}) async {
     _rate = rate;
     _pitch = pitch;
+    _volume = volume;
     if (_initialized) return;
     try {
       await _tts.setLanguage(_language);
       await _tts.setSpeechRate(_rate);
       await _tts.setPitch(_pitch);
-      await _tts.setVolume(1.0);
+      await _tts.setVolume(_volume);
       // الانتظار حتى تنتهي الجملة يسمح ببناء طابور مرتب.
       await _tts.awaitSpeakCompletion(true);
       _initialized = true;
@@ -41,6 +43,41 @@ class TtsService {
       _initialized = true;
       debugPrint('TTS init failed: $e');
     }
+  }
+
+  /// كل الأصوات العربية المتاحة على الجهاز (للاختيار من الإعدادات).
+  Future<List<Map<String, String>>> arabicVoices() async {
+    final List<Map<String, String>> result = <Map<String, String>>[];
+    try {
+      final dynamic raw = await _tts.getVoices;
+      if (raw is! List<dynamic>) return result;
+      for (final dynamic v in raw) {
+        if (v is! Map<dynamic, dynamic>) continue;
+        final String? locale = v['locale']?.toString();
+        final String? name = v['name']?.toString();
+        if (locale == null || name == null) continue;
+        if (!locale.toLowerCase().startsWith('ar')) continue;
+        result.add(<String, String>{'name': name, 'locale': locale});
+      }
+    } catch (_) {
+      // المنصة لا تدعم تعداد الأصوات — تُعرض القائمة فارغة.
+    }
+    return result;
+  }
+
+  /// تطبيق صوت محدّد بالاسم واللغة.
+  Future<void> applyVoice(String name, String locale) async {
+    try {
+      await _tts.setVoice(<String, String>{'name': name, 'locale': locale});
+      _language = locale;
+    } catch (_) {}
+  }
+
+  Future<void> setVolume(double volume) async {
+    _volume = volume.clamp(0.1, 1.0).toDouble();
+    try {
+      await _tts.setVolume(_volume);
+    } catch (_) {}
   }
 
   /// اختيار صوت عربي إن وُجد على الجهاز.
